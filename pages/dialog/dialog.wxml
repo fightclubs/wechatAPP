@@ -20,7 +20,7 @@
 
   <view class="section">
     <view class="section__title">input</view>
-    <input name="input" placeholder="please input here" />
+    <input name="input" bindinput="bindKeyInput" placeholder="please input here" />
   </view>
 
   <view class="btn-area">

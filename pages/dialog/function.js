@@ -10,16 +10,8 @@ function loginDialog()
             }
         })
  }
-function sleep(numberMillis) { 
-  var now = new Date(); 
-  var exitTime = now.getTime() + numberMillis; 
-  while (true) { 
-  now = new Date(); 
-  if (now.getTime() > exitTime) 
-  return; 
-  } 
-}
-function send_request(userInfo,isMatchUser)
+
+function send_request(userInfo)
 {
   wx.request({
             url: 'https://owlwang.com/wechat/login.php',
@@ -40,15 +32,12 @@ function send_request(userInfo,isMatchUser)
             //服务器无响应
             fail: function(res) {
               console.log("服务器无响应!")
-              isMatchUser=1;
             }
      })
-     return isMatchUser
 }
  function matchUsers(userInfo) {
     //发送到服务器并请求配对信息
-    var isMatchUser=1;
-    send_request(userInfo,isMatchUser)
+    send_request(userInfo)
     
 }
 
