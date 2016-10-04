@@ -22,5 +22,6 @@ Page({
         userInfo:userInfo
       })
     })
+
   }
 })
