@@ -7,7 +7,7 @@ Page({
         method: 'POST',
         data: {
           name: 'haha' ,
-          email: 'sb!'
+          input: '输入的内容'
         },
         success: function(res) {
           console.log(res.data)

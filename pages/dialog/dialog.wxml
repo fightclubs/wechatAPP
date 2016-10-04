@@ -30,6 +30,9 @@
 </form>
 </view>
 -->
+<!-- be attention the bind to javascript function-->
+ <form bindsubmit="formSubmit">
+
 
 <view class="div">
 
@@ -58,14 +61,17 @@
 
   <view class="div3">
 
+    <!-- be attention the bind to javascript function-->
+   <form bindsubmit="formSubmit">
     <view class="div3-1">
       <input name="input" placeholder="please input here" />
     </view>
 
     <view class="div3-2">
-      <button class="sub">submit</button>
+      <button class="sub" formType="submit">submit</button>
+      
     </view>
-
+    </form>
   </view>
 
 </view>
