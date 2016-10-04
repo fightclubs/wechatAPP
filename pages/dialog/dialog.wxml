@@ -1,0 +1,27 @@
+<view class="section">
+  <scroll-view scroll-y="true" style="height: 200px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+    <view>You're now chatting with a random stranger. Say hi!</view>
+  </scroll-view>
+
+  <form bindsubmit="formSubmit" bindreset="formReset">
+  <view class="section section_gap">
+    <view class="section__title">switch</view>
+    <switch name="switch"/>
+  </view>
+  <view class="section section_gap">
+    <view class="section__title">slider</view>
+    <slider name="slider" show-value ></slider>
+  </view>
+
+  <view class="section">
+    <view class="section__title">input</view>
+    <input name="input" placeholder="please input here" />
+  </view>
+  <view class="section section_gap">
+  </view>
+  <view class="btn-area">
+    <button formType="submit">Submit</button>
+    <button >Stop</button>
+  </view>
+</form>
+</view>

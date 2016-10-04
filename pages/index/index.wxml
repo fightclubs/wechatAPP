@@ -1,0 +1,12 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="userinfo">
+    <text class="userInfo-tip">欢迎你，</text>
+    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    <text class="userInfo-tip">在这里，你可以结识一个新朋友，系统会随机挑选一个人和你一对一聊天。不要有压力～你可以点击结束按钮，随时结束对话。</text>
+  </view>
+  <view class="chat-entrance">
+    <button class ="chat-entrance" bindtap="bindViewTap">Go</button>
+  </view>
+</view>
