@@ -1,9 +1,13 @@
+<!--
 <view class="section">
-  <scroll-view scroll-y="true" style="height: 200px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+  <scroll-view scroll-y="true" style="height: 200px;" bindscrolltoupper="upper" bindscrolltolower="lower" 
+  bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
     <view>You're now chatting with a random stranger. Say hi!</view>
   </scroll-view>
 
   <form bindsubmit="formSubmit" bindreset="formReset">
+  
+  
   <view class="section section_gap">
     <view class="section__title">switch</view>
     <switch name="switch"/>
@@ -12,16 +16,56 @@
     <view class="section__title">slider</view>
     <slider name="slider" show-value ></slider>
   </view>
+  
 
   <view class="section">
     <view class="section__title">input</view>
     <input name="input" placeholder="please input here" />
   </view>
-  <view class="section section_gap">
-  </view>
+
   <view class="btn-area">
-    <button formType="submit">Submit</button>
-    <button >Stop</button>
+    <button formType="submit" style="width:30%">Submit</button>
+    <button style="width:50%">location:index</button>
   </view>
 </form>
+</view>
+-->
+
+<view class="div">
+
+  <view class="div1">
+
+    <view class="div1-1">
+      <button class="re">RE</button>
+    </view>
+
+    <view class="div1-2">
+      stranger is typing...
+    </view>
+ 
+  </view>
+
+  <view class="div2">
+
+    <scroll-view scroll-y="true" style="height: 200px;" bindscrolltoupper="upper" bindscrolltolower="lower" 
+    bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+
+      <view class="div2-1">You're now chatting with a random stranger. Say hi!</view>
+
+    </scroll-view>
+
+  </view>
+
+  <view class="div3">
+
+    <view class="div3-1">
+      <input name="input" placeholder="please input here" />
+    </view>
+
+    <view class="div3-2">
+      <button class="sub">submit</button>
+    </view>
+
+  </view>
+
 </view>
