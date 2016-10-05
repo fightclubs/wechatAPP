@@ -2,11 +2,17 @@
 * 功能：开始一个聊天会话
 * 实现：发送本机用户数据并向服务器请求匹配一个用户数据返回
 */
+
 function loginChat()
  {
+     
     wx.getUserInfo({//通过wechat api获得本机用户数据
             success: function(res) {
                 userInfo = res.userInfo
+                //userInfo.latitude,userInfo.longitude=
+                
+                getLocation();
+                console.log('牛逼',userLocationX,userLocationY)
                 requestMatch(userInfo)//向服务器要求匹配一个用户
             },
             fail: function(res) {
@@ -14,6 +20,21 @@ function loginChat()
             }
         })
  }
+ /*
+* 功能：获取用户当前地理位置GPS数据
+* 实现：微信API
+*/
+
+function getLocation()
+{  
+    wx.getLocation({
+        type: 'wgs84',
+        success: function(res) {
+            userLocationX=res.latitude,
+            userLocationY=res.longitude
+        }
+    })
+}
 /*
 * 功能：向服务器请求一个用户配对
 * 实现：利用wechat api的wx.request提交一个json并获得一个返回json
@@ -30,6 +51,8 @@ function requestMatch(userInfo)
                 province:userInfo.province,
                 city:userInfo.city,
                 country:userInfo.country,
+                latitude:userInfo.latitude,
+                longitude:userInfo.longitude,
             },
             //服务器有响应
             success: function(res) {
