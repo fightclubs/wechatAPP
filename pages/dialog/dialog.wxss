@@ -66,3 +66,6 @@
     border-right: 3px solid gray;
     font-weight: bold;
 }
+.input{
+    height:100%;
+}

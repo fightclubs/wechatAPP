@@ -11,6 +11,7 @@ Page({
   },
   formSubmit: function(e) {
     console.log('form发生了submit事件，携带数据为：', this.data.inputText)
+    if(this.data.inputText!==''){
     wx.request({
         url: 'https://owlwang.com/wechat/test.php',
         method: 'POST',
@@ -25,6 +26,10 @@ Page({
           console.log("request fail")
         }
     })
+    }else{
+      console.log('输入不能为空!')
+    }
+    this.data.inputText=''
   },
   onLoad: function () {
     //建立会话
