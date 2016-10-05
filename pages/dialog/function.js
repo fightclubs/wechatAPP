@@ -21,15 +21,15 @@ function loginChat()
 function requestMatch(userInfo)
 {
   wx.request({
-            url: 'https://owlwang.com/wechat/login.php',
+            url: 'https://owlwang.com/wechat/chat.php',
             method: 'POST',
-            data: {
-            nickName:userInfo.nickName,
-            avatarUrl:userInfo.avatarUrl,
-            gender:userInfo.gender, //性别 0：未知、1：男、2：女 
-            province:userInfo.province,
-            city:userInfo.city,
-            country:userInfo.country,
+            data:{
+                nickName:userInfo.nickName,
+                avatarUrl:userInfo.avatarUrl,
+                gender:userInfo.gender, //性别 0：未知、1：男、2：女 
+                province:userInfo.province,
+                city:userInfo.city,
+                country:userInfo.country,
             },
             //服务器有响应
             success: function(res) {
@@ -44,8 +44,58 @@ function requestMatch(userInfo)
 }
 
 /*
+* 功能：设置定时轮询
+* 实现：定时去请求最新的聊天数据
+*/
+var interval;
+function startPolling(){
+    interval = setInterval(function(){
+
+        wx.request({
+                url: 'https://owlwang.com/wechat/login.php',
+                method: 'POST',
+                data: {
+                    user1:{
+                        nickName:userInfo.nickName,
+                        avatarUrl:userInfo.avatarUrl,
+                        gender:userInfo.gender, //性别 0：未知、1：男、2：女 
+                        province:userInfo.province,
+                        city:userInfo.city,
+                        country:userInfo.country,
+                        },
+                    user2:{
+                        nickName:userInfo.nickName,
+                        avatarUrl:userInfo.avatarUrl,
+                        gender:userInfo.gender, //性别 0：未知、1：男、2：女 
+                        province:userInfo.province,
+                        city:userInfo.city,
+                        country:userInfo.country,
+                        },
+                    time:new Date(),
+                },
+                //服务器有响应
+                success: function(res) {
+                console.log(res.data)
+                },
+                //服务器无响应
+                fail: function(res) {
+                console.log("服务器无响应!")
+                }
+        })
+    },500)
+}
+/*
+* 功能：关闭定时轮询
+* 实现：断开连接时关闭轮询
+*/
+function stopPolling(){
+    clearInterval(interval)
+}
+/*
 * 向框架注册要外部调用的函数
 */
 module.exports = {
-    loginChat: loginChat
+    loginChat: loginChat,
+    startPolling: startPolling,
+    stopPolling:stopPolling,
 }
