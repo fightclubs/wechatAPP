@@ -20,7 +20,7 @@
 
   <view class="section">
     <view class="section__title">input</view>
-    <input name="input" bindinput="bindKeyInput" placeholder="please input here" />
+    <input name="input" bindinput="bindKeyInput"placeholder="please input here" />
   </view>
 
   <view class="btn-area">
@@ -62,13 +62,13 @@
   <view class="div3">
 
     <!-- be attention the bind to javascript function-->
-   <form bindsubmit="formSubmit">
+   <form bindreset="formSubmit">
     <view class="div3-1">
-      <input name="input" placeholder="please input here" />
+      <input name="input" placeholder="please input here" bindinput="listenerPhoneInput"/>
     </view>
 
     <view class="div3-2">
-      <button class="sub" formType="submit">submit</button>
+      <button class="sub" formType="reset">submit</button>
       
     </view>
     </form>
