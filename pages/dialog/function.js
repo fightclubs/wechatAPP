@@ -9,61 +9,63 @@ function loginChat()
     wx.getUserInfo({//通过wechat api获得本机用户数据
             success: function(res) {
                 userInfo = res.userInfo
-                //userInfo.latitude,userInfo.longitude=
+
+                //更新requsetMatch里的userInfo
+                var requestMatch=matchUsers()
+                requestMatch(userInfo,null,null)
+                wx.getLocation({
+                    type: 'wgs84',
+                    success: function(res) {
+                        ////更新requsetMatch里的经纬度
+                        requestMatch(null,res.latitude,res.longitude)
+                    }
+                })
                 
-                getLocation();
-                console.log('牛逼',userLocationX,userLocationY)
-                requestMatch(userInfo)//向服务器要求匹配一个用户
             },
             fail: function(res) {
                 userInfo = null
             }
         })
  }
- /*
-* 功能：获取用户当前地理位置GPS数据
-* 实现：微信API
-*/
 
-function getLocation()
-{  
-    wx.getLocation({
-        type: 'wgs84',
-        success: function(res) {
-            userLocationX=res.latitude,
-            userLocationY=res.longitude
-        }
-    })
-}
 /*
 * 功能：向服务器请求一个用户配对
 * 实现：利用wechat api的wx.request提交一个json并获得一个返回json
+*      利用闭包的特性 函数内局部变量值不被销毁，两次调用matchUsers分别填充userInfo和经纬度
 */
-function requestMatch(userInfo)
+var matchUsers=function() 
 {
-  wx.request({
-            url: 'https://owlwang.com/wechat/chat.php',
-            method: 'POST',
-            data:{
-                nickName:userInfo.nickName,
-                avatarUrl:userInfo.avatarUrl,
-                gender:userInfo.gender, //性别 0：未知、1：男、2：女 
-                province:userInfo.province,
-                city:userInfo.city,
-                country:userInfo.country,
-                latitude:userInfo.latitude,
-                longitude:userInfo.longitude,
-            },
-            //服务器有响应
-            success: function(res) {
-              console.log("已经配对!")
-              console.log(res.data)
-            },
-            //服务器无响应
-            fail: function(res) {
-              console.log("服务器无响应!")
-            }
-     })
+  var userInfo,latitude,longitude
+  return function(userInf,latitude,longitude){
+      if(userInf!=null)
+          userInfo=userInf
+      if(latitude!=null&&longitude!=null)
+      {
+          wx.request({
+                    url: 'https://owlwang.com/wechat/chat.php',
+                    method: 'POST',
+                    data:{
+                        nickName:userInfo.nickName,
+                        avatarUrl:userInfo.avatarUrl,
+                        gender:userInfo.gender, //性别 0：未知、1：男、2：女 
+                        province:userInfo.province,
+                        city:userInfo.city,
+                        country:userInfo.country,
+                        latitude:latitude,
+                        longitude:longitude,
+                    },
+                    //服务器有响应
+                    success: function(res) {
+                    console.log("已经配对!")
+                    console.log(res.data)
+                    },
+                    //服务器无响应
+                    fail: function(res) {
+                    console.log("服务器无响应!")
+                    }
+            })
+      }
+}
 }
 
 /*
