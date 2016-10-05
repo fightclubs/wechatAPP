@@ -1,17 +1,24 @@
-function loginDialog()
+/*
+* 功能：开始一个聊天会话
+* 实现：发送本机用户数据并向服务器请求匹配一个用户数据返回
+*/
+function loginChat()
  {
-    wx.getUserInfo({
+    wx.getUserInfo({//通过wechat api获得本机用户数据
             success: function(res) {
                 userInfo = res.userInfo
-                matchUsers(userInfo)
+                requestMatch(userInfo)//向服务器要求匹配一个用户
             },
             fail: function(res) {
                 userInfo = null
             }
         })
  }
-
-function send_request(userInfo)
+/*
+* 功能：向服务器请求一个用户配对
+* 实现：利用wechat api的wx.request提交一个json并获得一个返回json
+*/
+function requestMatch(userInfo)
 {
   wx.request({
             url: 'https://owlwang.com/wechat/login.php',
@@ -35,12 +42,10 @@ function send_request(userInfo)
             }
      })
 }
- function matchUsers(userInfo) {
-    //发送到服务器并请求配对信息
-    send_request(userInfo)
-    
-}
 
+/*
+* 向框架注册要外部调用的函数
+*/
 module.exports = {
-    loginDialog: loginDialog
+    loginChat: loginChat
 }

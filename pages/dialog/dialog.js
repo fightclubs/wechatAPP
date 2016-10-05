@@ -6,13 +6,8 @@ Page({
    data:{
     inputText: '',
   },
-
-  /**
-   * 监听手机号输入
-   */
   listenerPhoneInput: function(e) {
       this.data.inputText = e.detail.value;
-     // return 'sb'
   },
   formSubmit: function(e) {
     console.log('form发生了submit事件，携带数据为：', this.data.inputText)
@@ -30,9 +25,8 @@ Page({
           console.log("request fail")
         }
     })
-    return 'asdsa'
   },
   onLoad: function () {
-    chatfunction.loginDialog()
+    chatfunction.loginChat()
   }
 })
