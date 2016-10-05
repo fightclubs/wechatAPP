@@ -50,7 +50,6 @@ function requestMatch(userInfo)
 var interval;
 function startPolling(){
     interval = setInterval(function(){
-
         wx.request({
                 url: 'https://owlwang.com/wechat/login.php',
                 method: 'POST',

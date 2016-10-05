@@ -54,7 +54,7 @@
     bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
 
       <view class="div2-1">You're now chatting with a random stranger. Say hi!</view>
-
+      <view wx:for="{{chatContent}}">{{item.name}}: {{item.content}}</view>
     </scroll-view>
 
   </view>
