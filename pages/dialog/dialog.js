@@ -10,26 +10,31 @@ Page({
   },
   formSubmit: function(e) {
     console.log('form发生了submit事件，携带数据为：', this.data.inputText)
-    wx.request({
-        url: 'https://owlwang.com/wechat/test.php',
-        method: 'POST',
-        data: {
-          neme: 'haha' ,
-          input: this.data.inputText,
-        },
-        success: function(res) {
-          console.log(res.data)
-        },
-        fail: function(res) {
-          console.log("request fail")
-        }
-    })
+    if(this.data.inputText!==''){
+      wx.request({
+          url: 'https://owlwang.com/wechat/test.php',
+          method: 'POST',
+          data: {
+           neme: 'haha' ,
+           input: this.data.inputText,
+         },
+         success: function(res) {
+           console.log(res.data)
+          },
+         fail: function(res) {
+            console.log("request fail")
+          }
+     })
+     this.data.inputText = '';
+    }else{
+      console.log('输入不能为空')
+    }
   },
   onLoad: function () {
     //建立会话
     chatfunction.loginChat()
     //如果成功建立
-    chatfunction.startPolling()
+   // chatfunction.startPolling()
   },
   onUnload:function () {
     //关闭会话
