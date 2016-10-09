@@ -2,21 +2,41 @@
 * 功能：开始一个聊天会话
 * 实现：发送本机用户数据并向服务器请求匹配一个用户数据返回
 */
+var socketOpen = false;
+function connectServer()
+{
+    //发起websocket连接
+    wx.connectSocket({
+      url: 'ws://45.32.32.225:7272',
+    })
+    //响应连接成功事件，发送用户数据
+    onConnectServer()
 
-function loginChat()
- {
-     
+    //注册服务器消息回调函数
+    recvMessage()
+
+    //连接失败
+    wx.onSocketError(function(res){
+    console.log('WebSocket连接打开失败，请检查！')
+    })
+}
+function onConnectServer()
+{
+    wx.onSocketOpen(function(res) {
+    socketOpen = true
+  
     wx.getUserInfo({//通过wechat api获得本机用户数据
             success: function(res) {
                 userInfo = res.userInfo
-
                 //更新requsetMatch里的userInfo
                 var requestMatch=matchUsers()
                 requestMatch(userInfo,null,null)
+
+                //通过api获取位置数据
                 wx.getLocation({
                     type: 'wgs84',
                     success: function(res) {
-                        ////更新requsetMatch里的经纬度
+                        //更新requsetMatch里的经纬度
                         requestMatch(null,res.latitude,res.longitude)
                     }
                 })
@@ -26,7 +46,39 @@ function loginChat()
                 userInfo = null
             }
         })
- }
+    })
+}
+function disconnectServer()
+{
+    wx.closeSocket()
+    wx.onSocketClose(function(res) {
+        console.log('WebSocket 已关闭！')
+    })   
+}
+function sendMessage(msg)
+{
+     socketOpen = true
+    if (socketOpen) {
+        wx.sendSocketMessage({
+          data:msg
+        })
+    }
+}
+function recvMessage()
+{   
+    wx.onSocketMessage(function(res) {
+    //log返回数据
+    console.log('收到服务器内容：' + res.data)
+    //解析数据
+    parseMessage(res.data)
+    })
+}
+function parseMessage(msg)
+{
+    //switch
+
+}
+
 
 /*
 * 功能：向服务器请求一个用户配对
@@ -41,85 +93,20 @@ var matchUsers=function()
           userInfo=userInf
       if(latitude!=null&&longitude!=null)
       {
-          wx.request({
-                    url: 'https://owlwang.com/wechat/chat.php',
-                    method: 'POST',
-                    data:{
-                        nickName:userInfo.nickName,
-                        avatarUrl:userInfo.avatarUrl,
-                        gender:userInfo.gender, //性别 0：未知、1：男、2：女 
-                        province:userInfo.province,
-                        city:userInfo.city,
-                        country:userInfo.country,
-                        latitude:latitude,
-                        longitude:longitude,
-                    },
-                    //服务器有响应
-                    success: function(res) {
-                    console.log("已经配对!")
-                    console.log(res.data)
-                    },
-                    //服务器无响应
-                    fail: function(res) {
-                    console.log("服务器无响应!")
-                    }
-            })
+          userInfo.latitude=latitude;
+          userInfo.longitude=longitude;
+          //向服务器发送用户数据
+          sendMessage(JSON.stringify(userInfo));
       }
-}
+  }
 }
 
-/*
-* 功能：设置定时轮询
-* 实现：定时去请求最新的聊天数据
-*/
-var interval;
-function startPolling(){
-    interval = setInterval(function(){
-        wx.request({
-                url: 'https://owlwang.com/wechat/login.php',
-                method: 'POST',
-                data: {
-                    user1:{
-                        nickName:userInfo.nickName,
-                        avatarUrl:userInfo.avatarUrl,
-                        gender:userInfo.gender, //性别 0：未知、1：男、2：女 
-                        province:userInfo.province,
-                        city:userInfo.city,
-                        country:userInfo.country,
-                        },
-                    user2:{
-                        nickName:userInfo.nickName,
-                        avatarUrl:userInfo.avatarUrl,
-                        gender:userInfo.gender, //性别 0：未知、1：男、2：女 
-                        province:userInfo.province,
-                        city:userInfo.city,
-                        country:userInfo.country,
-                        },
-                    time:new Date(),
-                },
-                //服务器有响应
-                success: function(res) {
-                console.log(res.data)
-                },
-                //服务器无响应
-                fail: function(res) {
-                console.log("服务器无响应!")
-                }
-        })
-    },500)
-}
-/*
-* 功能：关闭定时轮询
-* 实现：断开连接时关闭轮询
-*/
-function stopPolling(){
-    clearInterval(interval)
-}
+
 /*
 * 向框架注册要外部调用的函数
 */
 module.exports = {
-    loginChat: loginChat,
-    startPolling: startPolling,
-    stopPolling:stopPolling,
+    connectServer:connectServer,
+    disconnectServer:disconnectServer,
 }
+

@@ -33,13 +33,14 @@ Page({
   },
   onLoad: function () {
     //建立会话
-    chatfunction.loginChat()
+    //chatfunction.loginChat()
+    chatfunction.connectServer()
     //如果成功建立
     //chatfunction.startPolling()
   },
   onUnload:function () {
     //关闭会话
     //关闭轮询
-    chatfunction.stopPolling()
+    chatfunction.disconnectServer()
   },
 })
